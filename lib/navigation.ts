@@ -18,7 +18,7 @@ export type NavigationItem = {
 };
 
 export const NAVIGATION_ITEMS: readonly NavigationItem[] = [
-  { id: "landing", number: "01", label: "LANDING" },
+  { id: "landing", number: "01", label: "LANDING", darkBackground: true },
   { id: "about", number: "02", label: "ABOUT" },
   { id: "archive", number: "03", label: "ARCHIVE" },
   { id: "experience", number: "04", label: "WHERE IT GOES" },

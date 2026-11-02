@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  getActiveSectionAtReadingLine,
   getNavigationItem,
   isSectionId,
   NAV_OVERLAY_ID,
@@ -26,7 +25,6 @@ export default function FullScreenNavigation() {
   const navListRef = useRef<HTMLUListElement>(null);
   const scrollLockY = useRef(0);
   const navigateTokenRef = useRef(0);
-  const pendingCloseScrollRef = useRef<SectionId | null>(null);
   const wasOpenRef = useRef(false);
 
   const [isOpen, setIsOpen] = useState(false);
@@ -38,13 +36,50 @@ export default function FullScreenNavigation() {
   const triggerOnDark = activeItem?.darkBackground ?? false;
 
   const updateActiveSection = useCallback(() => {
-    setActiveSectionId(getActiveSectionAtReadingLine());
+    // Don't update the active section while the menu is open.
+    if (document.body.style.position === "fixed") return;
+  
+    const readingLine = window.innerHeight * 0.35;
+  
+    let currentSection: SectionId = "landing";
+  
+    for (const { id } of NAVIGATION_ITEMS) {
+      const section = document.getElementById(id);
+  
+      if (!section) continue;
+  
+      const rect = section.getBoundingClientRect();
+  
+      if (rect.top <= readingLine && rect.bottom > readingLine) {
+        currentSection = id;
+        break;
+      }
+    }
+  
+    setActiveSectionId((previous) =>
+      previous === currentSection ? previous : currentSection,
+    );
+  
+    const newHash = sectionHref(currentSection);
+  
+    if (window.location.hash !== newHash) {
+      window.history.replaceState(null, "", newHash);
+    }
   }, []);
 
   const closeMenu = useCallback(() => {
+    // Cancel any pending navigation
     navigateTokenRef.current += 1;
-    pendingCloseScrollRef.current = null;
+  
+    // Close the menu
     setIsOpen(false);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      // Invalidate pending navigation if the component unmounts
+      navigateTokenRef.current += 1;
+    };
   }, []);
 
   const openMenu = useCallback(() => {
@@ -65,19 +100,31 @@ export default function FullScreenNavigation() {
 
   const navigateToSection = useCallback(
     (id: SectionId) => {
+      // Cancel any previous pending navigation
       const token = ++navigateTokenRef.current;
-      pendingCloseScrollRef.current = id;
+  
+      // Close the navigation overlay
       setIsOpen(false);
-
-      if (!prefersReducedMotion) return;
-
-      window.requestAnimationFrame(() => {
+  
+      // Update the active section immediately
+      setActiveSectionId(id);
+  
+      // Allow the closing animation to complete
+      const delay = prefersReducedMotion ? 0 : 470;
+  
+      window.setTimeout(() => {
+        // Prevent outdated navigation requests
         if (token !== navigateTokenRef.current) return;
-        if (pendingCloseScrollRef.current !== id) return;
-
-        pendingCloseScrollRef.current = null;
-        scrollToSection(id, "auto");
-      });
+  
+        window.requestAnimationFrame(() => {
+          if (token !== navigateTokenRef.current) return;
+  
+          scrollToSection(
+            id,
+            prefersReducedMotion ? "auto" : "smooth",
+          );
+        });
+      }, delay);
     },
     [prefersReducedMotion, scrollToSection],
   );
@@ -248,25 +295,6 @@ export default function FullScreenNavigation() {
     }
   };
 
-  const handleOverlayTransitionEnd = (
-    event: React.TransitionEvent<HTMLDivElement>,
-  ) => {
-    if (prefersReducedMotion) return;
-    if (event.propertyName !== "transform") return;
-    if (event.target !== event.currentTarget) return;
-
-    const pending = pendingCloseScrollRef.current;
-    if (!pending) return;
-
-    const token = navigateTokenRef.current;
-    pendingCloseScrollRef.current = null;
-
-    window.requestAnimationFrame(() => {
-      if (token !== navigateTokenRef.current) return;
-      scrollToSection(pending, "smooth");
-    });
-  };
-
   return (
     <>
       <button
@@ -279,7 +307,11 @@ export default function FullScreenNavigation() {
         aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
         onClick={handleTriggerClick}
         className={`fixed left-0 top-0 z-50 flex min-h-11 min-w-11 items-center justify-center p-3 text-xl leading-none transition-colors sm:p-4 sm:text-2xl ${
-          isOpen || !triggerOnDark ? "text-charcoal" : "text-canvas"
+          isOpen
+            ? "text-charcoal"
+            : triggerOnDark
+              ? "text-brand-pink"
+              : "text-charcoal"
         } motion-reduce:transition-none`}
       >
         <span aria-hidden="true">{isOpen ? "×" : ">"}</span>
@@ -292,7 +324,6 @@ export default function FullScreenNavigation() {
         aria-modal="true"
         aria-labelledby={titleId}
         aria-hidden={!isOpen}
-        onTransitionEnd={handleOverlayTransitionEnd}
         className={`fixed inset-0 z-40 flex h-dvh w-full flex-col bg-canvas transition-transform duration-[450ms] ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${
           isOpen ? "translate-x-0" : "-translate-x-full pointer-events-none"
         }`}
@@ -319,7 +350,7 @@ export default function FullScreenNavigation() {
                     }}
                     className={`block text-2xl tracking-wide sm:text-3xl md:text-4xl lg:text-[2.75rem] lg:leading-tight ${
                       isActive
-                        ? "font-bold text-cobalt"
+                        ? "font-bold text-brand-blue"
                         : "font-normal text-charcoal"
                     }`}
                   >

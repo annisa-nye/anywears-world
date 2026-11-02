@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Allura, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -12,6 +12,13 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const allura = Allura({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-allura",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "anywears. — An Independent Archive",
   description:
@@ -22,7 +29,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${allura.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-canvas text-charcoal font-sans">
         {children}

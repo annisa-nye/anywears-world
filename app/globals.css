@@ -10,9 +10,21 @@
   --color-foreground: var(--foreground);
   --color-charcoal: #242424;
   --color-canvas: #f8f7f4;
-  --color-cobalt: #0047ab;
+  --color-brand-blue: #1e1ea4;
+  --color-brand-pink: #fac9ff;
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-enter: var(--font-allura);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 body {
