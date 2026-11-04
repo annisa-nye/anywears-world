@@ -20,12 +20,15 @@ const allura = Allura({
 });
 
 export const metadata: Metadata = {
-  title: "anywears. — An Independent Archive",
+  title: "anywears",
   description:
-    "Anywears World — a bespoke editorial fashion archive and creative web development portfolio.",
+    "An independent fashion archive, told through the World Wide Web.",
+  manifest: "/site.webmanifest",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+}: LayoutProps<"/">) {
   return (
     <html
       lang="en"
