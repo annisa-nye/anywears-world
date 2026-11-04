@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import Image from "next/image";
 
-const LANDING_GIF_PATH = "/images/landing/landing.gif";
+const LANDING_GIF_PATH = "/images/landing/landing-3.gif";
 
 /** Default display size — update width/height to match landing.gif when added. */
 const LANDING_MEDIA_WIDTH = 480;
@@ -14,7 +14,7 @@ function landingGifExists(): boolean {
     "public",
     "images",
     "landing",
-    "landing.gif",
+    "landing-3.gif",
   );
 
   return fs.existsSync(absolutePath);
