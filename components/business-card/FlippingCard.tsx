@@ -16,10 +16,6 @@ const DEPOP_URL =
 export default function FlippingCard() {
   const [isFlipped, setIsFlipped] = useState(false);
 
-  const toggleCard = () => {
-    setIsFlipped((previous) => !previous);
-  };
-
   return (
     <div className="mx-auto w-full max-w-[560px]">
       {/* Perspective container */}
@@ -37,48 +33,67 @@ export default function FlippingCard() {
               : "rotateY(0deg)",
           }}
         >
-          {/* FRONT */}
-          <div
+
+            {/* FRONT */}
+            <div
             className="absolute inset-0 overflow-hidden
-              rounded-[20px] bg-[#DCE2FF]"
+                rounded-[20px] bg-[#DCE2FF]"
             style={{ backfaceVisibility: "hidden" }}
             aria-hidden={isFlipped}
             inert={isFlipped}
-          >
+            >
             <button
-              type="button"
-              onClick={() => setIsFlipped(true)}
-              aria-label="Flip business card to view the back"
-              className="flex h-full w-full cursor-pointer
-                items-center justify-center p-[7%]
+                type="button"
+                onClick={() => setIsFlipped(true)}
+                aria-label="Flip business card to view the back"
+                className="relative flex h-full w-full cursor-pointer
+                items-end justify-start overflow-hidden
                 focus-visible:outline
                 focus-visible:outline-2
-                focus-visible:outline-brand-blue
-                focus-visible:outline-offset-4"
+                focus-visible:outline-brand-blue"
             >
-              <Image
+                <Image
                 src="/images/branding/pixelated_flower.png"
                 alt="Pixelated blue flower illustration"
                 width={1584}
                 height={960}
                 unoptimized
-                className="h-full w-full object-contain"
-              />
+                className="block h-auto w-[86%] origin-bottom-left
+                    scale-[1.2] object-contain"
+                />
             </button>
-          </div>
+            </div>
+
 
           {/* BACK */}
-          <div
-            className="absolute inset-0 overflow-hidden
-              rounded-[20px] bg-[#DCE2FF]
-              p-[7%] text-brand-blue"
+
+          <div 
+            className="absolute inset-0 cursor-pointer overflow-hidden rounded-[20px] bg-[#DCE2FF] p-[7%] text-brand-blue"
             style={{
-              backfaceVisibility: "hidden",
-              transform: "rotateY(180deg)",
+                backfaceVisibility: "hidden",
+                transform: "rotateY(180deg)",
             }}
             aria-hidden={!isFlipped}
             inert={!isFlipped}
-          >
+            onClick={(event) => {
+                // Don't flip when clicking a social link.
+                if ((event.target as HTMLElement).closest("a")) return;
+                setIsFlipped(false);
+            }}
+>
+
+            <button
+            type="button"
+            onClick={() => setIsFlipped(false)}
+            aria-label="Turn business card to the front"
+            className="sr-only focus:not-sr-only
+                focus:absolute focus:bottom-3 focus:right-3
+                focus:z-20 focus:bg-canvas focus:px-3
+                focus:py-2 focus:text-brand-blue"
+            >
+            Turn card to front
+            </button>
+
             <div className="flex h-full flex-col justify-between">
               {/* Editorial text */}
               <div
@@ -153,28 +168,11 @@ export default function FlippingCard() {
         </div>
       </div>
 
-      {/* All utility controls remain outside the card */}
-      <div className="mt-7 flex items-center justify-center gap-3">
-        <button
-          type="button"
-          onClick={toggleCard}
-          aria-label={
-            isFlipped
-              ? "Show front of business card"
-              : "Show back of business card"
-          }
-          className="flex items-center gap-2
-            text-xs tracking-wide text-charcoal/60
-            transition-colors hover:text-brand-blue
-            focus-visible:outline
-            focus-visible:outline-2
-            focus-visible:outline-offset-4
-            focus-visible:outline-brand-blue"
-        >
-          <span aria-hidden="true">↻</span>
-          <span>{isFlipped ? "view front" : "view reverse"}</span>
-        </button>
-      </div>
+    
+        <p className="mt-7 text-center text-[11px] font-normal lowercase tracking-[0.08em] text-charcoal/45">
+        click to turn ↻
+        </p>
+
     </div>
   );
 }
