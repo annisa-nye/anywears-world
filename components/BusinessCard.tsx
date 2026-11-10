@@ -1,33 +1,36 @@
-const INSTAGRAM_URL = "https://www.instagram.com/anywears.shop/";
+import FlippingCard from "./business-card/FlippingCard";
 
 export default function BusinessCard() {
   return (
     <footer
       id="business-card"
       aria-labelledby="business-card-heading"
-      className="border-t border-charcoal/10 px-6 py-20 sm:px-10 md:py-28"
+      className="bg-canvas px-6 py-28 text-charcoal
+        sm:px-10 md:py-40"
     >
-      <div className="mx-auto flex max-w-6xl flex-col gap-10 border border-charcoal/20 bg-charcoal/[0.02] p-8 sm:p-12 md:flex-row md:items-end md:justify-between">
-        <div>
-          <p
-            id="business-card-heading"
-            className="text-lg tracking-[0.15em] uppercase sm:text-xl"
-          >
-            anywears.
-          </p>
-          <p className="mt-4 max-w-xs text-sm leading-relaxed text-charcoal/75">
-            for anyone, anywhere.
-          </p>
-        </div>
-        <a
-          href={INSTAGRAM_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-sm tracking-wide underline underline-offset-4 decoration-charcoal/30 hover:decoration-charcoal/60"
+      <div className="mx-auto max-w-6xl">
+
+        {/* Minimal section heading */}
+        <h2
+          id="business-card-heading"
+          className="mb-20 text-sm font-normal
+            lowercase md:mb-28"
         >
-          @anywears.shop
-          <span className="sr-only"> (opens in a new tab)</span>
-        </a>
+          take a card.
+        </h2>
+
+        {/* Interactive business card */}
+        <FlippingCard />
+
+        {/* Minimal closing details */}
+        <div className="mt-28 flex items-center
+          justify-between text-xs
+          tracking-wide text-charcoal/50
+          md:mt-40"
+        >
+          <span>anywears.</span>
+          <span>for anyone, anywhere.</span>
+        </div>
       </div>
     </footer>
   );
