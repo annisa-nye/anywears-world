@@ -145,7 +145,7 @@ export default function FlippingCard() {
                     rel="noopener noreferrer"
                     className="hover:underline underline-offset-2"
                   >
-                    ig: @anywears.shop
+                    instagram: @anywears.shop
                   </a>
 
                   <span className="mt-3">
