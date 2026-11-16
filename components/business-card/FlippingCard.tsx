@@ -2,6 +2,7 @@
 "use client";
 
 import Image from "next/image";
+import posthog from "posthog-js";
 import { useState } from "react";
 
 const VINTED_URL =
@@ -15,6 +16,15 @@ const DEPOP_URL =
 
 export default function FlippingCard() {
   const [isFlipped, setIsFlipped] = useState(false);
+
+  const flipCard = (side: "front" | "back") => {
+    posthog.capture("business_card_flipped", { side });
+    setIsFlipped(side === "back");
+  };
+
+  const captureExternalShopLink = (platform: "depop" | "vinted" | "instagram") => {
+    posthog.capture("external_shop_link_opened", { platform });
+  };
 
   return (
     <div className="mx-auto w-full max-w-[560px]">
@@ -44,7 +54,7 @@ export default function FlippingCard() {
             >
             <button
                 type="button"
-                onClick={() => setIsFlipped(true)}
+                onClick={() => flipCard("back")}
                 aria-label="Flip business card to view the back"
                 className="relative flex h-full w-full cursor-pointer
                 items-end justify-start overflow-hidden
@@ -78,13 +88,16 @@ export default function FlippingCard() {
             onClick={(event) => {
                 // Don't flip when clicking a social link.
                 if ((event.target as HTMLElement).closest("a")) return;
-                setIsFlipped(false);
+                flipCard("front");
             }}
 >
 
             <button
             type="button"
-            onClick={() => setIsFlipped(false)}
+            onClick={(event) => {
+              event.stopPropagation();
+              flipCard("front");
+            }}
             aria-label="Turn business card to the front"
             className="sr-only focus:not-sr-only
                 focus:absolute focus:bottom-3 focus:right-3
@@ -125,6 +138,7 @@ export default function FlippingCard() {
                     href={DEPOP_URL}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() => captureExternalShopLink("depop")}
                     className="hover:underline underline-offset-2"
                   >
                     depop: @anywearshop
@@ -134,6 +148,7 @@ export default function FlippingCard() {
                     href={VINTED_URL}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() => captureExternalShopLink("vinted")}
                     className="hover:underline underline-offset-2"
                   >
                     vinted: @anywearshop
@@ -143,6 +158,7 @@ export default function FlippingCard() {
                     href={INSTAGRAM_URL}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() => captureExternalShopLink("instagram")}
                     className="hover:underline underline-offset-2"
                   >
                     instagram: @anywears.shop
