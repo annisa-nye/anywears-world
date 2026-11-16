@@ -8,7 +8,6 @@ import {
   type SectionId,
   sectionHref,
 } from "@/lib/navigation";
-import posthog from "posthog-js";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 
 function getFocusableElements(container: HTMLElement): HTMLElement[] {
@@ -84,11 +83,8 @@ export default function FullScreenNavigation() {
   }, []);
 
   const openMenu = useCallback(() => {
-    posthog.capture("navigation_menu_opened", {
-      active_section_id: activeSectionId,
-    });
     setIsOpen(true);
-  }, [activeSectionId]);
+  }, []);
 
   const scrollToSection = useCallback(
     (id: SectionId, behavior: ScrollBehavior) => {
@@ -104,10 +100,6 @@ export default function FullScreenNavigation() {
 
   const navigateToSection = useCallback(
     (id: SectionId) => {
-      posthog.capture("navigation_section_selected", {
-        section_id: id,
-      });
-
       // Cancel any previous pending navigation
       const token = ++navigateTokenRef.current;
   
