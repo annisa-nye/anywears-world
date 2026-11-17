@@ -1,18 +1,23 @@
 import Image from "next/image";
 import Link from "next/link";
 
-type PreviewImage = {
-  src: string;
-  alt: string;
-};
-
-const previewImages: PreviewImage[] = [
-  // Add your four selected photographs here.
-  // Example:
-  // {
-  //   src: "/images/archive/preview/01.jpg",
-  //   alt: "Vintage leather handbag",
-  // },
+const previewImages = [
+  {
+    src: "/images/archive/preview/01.jpeg",
+    alt: "Selected fashion piece from the Anywears archive",
+  },
+  {
+    src: "/images/archive/preview/02.jpeg",
+    alt: "Selected vintage piece from the Anywears archive",
+  },
+  {
+    src: "/images/archive/preview/03.jpeg",
+    alt: "Selected designer piece from the Anywears archive",
+  },
+  {
+    src: "/images/archive/preview/04.jpeg",
+    alt: "Selected item from the Anywears collection",
+  },
 ];
 
 export default function ArchivePreview() {
@@ -23,8 +28,7 @@ export default function ArchivePreview() {
       className="bg-canvas px-6 py-28 text-charcoal md:px-12 md:py-40"
     >
       <div className="mx-auto max-w-6xl">
-        {/* Section heading */}
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-4">
           <h2
             id="archive-preview-heading"
             className="text-sm font-normal lowercase"
@@ -37,7 +41,6 @@ export default function ArchivePreview() {
           </span>
         </div>
 
-        {/* Editorial image composition */}
         <div className="mt-20 grid grid-cols-2 items-start gap-x-5 gap-y-12 md:mt-28 md:gap-x-16 md:gap-y-24">
           {previewImages.map((image, index) => (
             <figure
@@ -54,14 +57,13 @@ export default function ArchivePreview() {
                 width={800}
                 height={1000}
                 sizes="(max-width: 768px) 45vw, 40vw"
-                className="block h-auto w-full object-contain"
+                className="block h-auto w-full"
               />
             </figure>
           ))}
         </div>
 
-        {/* Archive link */}
-        <div className="mt-28 flex justify-end md:mt-44">
+        <div className="mt-32 flex justify-end md:mt-48">
           <Link
             href="/archive"
             className="border-b border-current pb-1 text-sm transition-opacity hover:opacity-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-blue"
