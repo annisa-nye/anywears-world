@@ -19,13 +19,16 @@ export default function About() {
         {/* Photograph */}
         <figure className="ml-auto mt-20 w-[85%] md:mt-28 md:w-[68%]">
           <Image
-            src="/images/about/cherry-blossom-tree.jpg"
-            alt="Cherry blossom branches against a pale blue sky"
-            width={1496}
-            height={1024}
+            src="/images/about/abbotsford-2026.jpeg"
+            alt="Pink and white flowers growing against a rugged garage wall in Abbotsford"
+            width={1280}
+            height={960}
             sizes="(max-width: 768px) 85vw, 68vw"
             className="block h-auto w-full"
           />
+          <figcaption className="mt-3 text-[11px] uppercase tracking-[0.14em] text-charcoal/55">
+            abbotsford, 2026
+          </figcaption>
         </figure>
 
         {/* Introduction */}

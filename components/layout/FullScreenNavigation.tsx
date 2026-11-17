@@ -1,216 +1,78 @@
 "use client";
 
-import {
-  getNavigationItem,
-  isSectionId,
-  NAV_OVERLAY_ID,
-  NAVIGATION_ITEMS,
-  type SectionId,
-  sectionHref,
-} from "@/lib/navigation";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
+
+const NAV_OVERLAY_ID = "site-navigation-overlay";
+
+const NAVIGATION_ITEMS = [
+  { number: "01", label: "home.", href: "/" },
+  { number: "02", label: "archive.", href: "/archive" },
+  { number: "03", label: "contact.", href: "/contact" },
+] as const;
 
 function getFocusableElements(container: HTMLElement): HTMLElement[] {
   return Array.from(
     container.querySelectorAll<HTMLElement>(
       'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
     ),
-  ).filter((el) => !el.hasAttribute("disabled") && el.offsetParent !== null);
+  ).filter((element) => !element.hasAttribute("disabled") && element.offsetParent !== null);
+}
+
+function isActiveRoute(pathname: string, href: string): boolean {
+  if (href === "/") return pathname === "/";
+  return pathname === href || pathname.startsWith(`${href}/`);
 }
 
 export default function FullScreenNavigation() {
+  const pathname = usePathname();
   const titleId = useId();
   const triggerRef = useRef<HTMLButtonElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const navListRef = useRef<HTMLUListElement>(null);
   const scrollLockY = useRef(0);
-  const navigateTokenRef = useRef(0);
   const wasOpenRef = useRef(false);
-
   const [isOpen, setIsOpen] = useState(false);
-  const [activeSectionId, setActiveSectionId] =
-    useState<SectionId>("landing");
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [isOverLanding, setIsOverLanding] = useState(false);
 
-  const activeItem = getNavigationItem(activeSectionId);
-  const triggerOnDark = activeItem?.darkBackground ?? false;
+  const closeMenu = useCallback(() => setIsOpen(false), []);
 
-  const updateActiveSection = useCallback(() => {
-    // Don't update the active section while the menu is open.
-    if (document.body.style.position === "fixed") return;
-  
-    const readingLine = window.innerHeight * 0.35;
-  
-    let currentSection: SectionId = "landing";
-  
-    for (const { id } of NAVIGATION_ITEMS) {
-      const section = document.getElementById(id);
-  
-      if (!section) continue;
-  
-      const rect = section.getBoundingClientRect();
-  
-      if (rect.top <= readingLine && rect.bottom > readingLine) {
-        currentSection = id;
-        break;
+  // Keep the existing pink menu trigger while it sits over the cobalt landing.
+  // This detects the background without rewriting the URL hash during scrolling.
+  useEffect(() => {
+    const updateTriggerColour = () => {
+      const landing = pathname === "/" ? document.getElementById("landing") : null;
+      if (!landing) {
+        setIsOverLanding(false);
+        return;
       }
-    }
-  
-    setActiveSectionId((previous) =>
-      previous === currentSection ? previous : currentSection,
-    );
-  
-    const newHash = sectionHref(currentSection);
-  
-    if (window.location.hash !== newHash) {
-      window.history.replaceState(null, "", newHash);
-    }
-  }, []);
+      const rect = landing.getBoundingClientRect();
+      setIsOverLanding(rect.top <= 24 && rect.bottom > 24);
+    };
 
-  const closeMenu = useCallback(() => {
-    // Cancel any pending navigation
-    navigateTokenRef.current += 1;
-  
-    // Close the menu
-    setIsOpen(false);
-  }, []);
-
-  useEffect(() => {
+    const frame = window.requestAnimationFrame(updateTriggerColour);
+    window.addEventListener("scroll", updateTriggerColour, { passive: true });
+    window.addEventListener("resize", updateTriggerColour);
     return () => {
-      // Invalidate pending navigation if the component unmounts
-      navigateTokenRef.current += 1;
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", updateTriggerColour);
+      window.removeEventListener("resize", updateTriggerColour);
     };
-  }, []);
+  }, [pathname]);
 
-  const openMenu = useCallback(() => {
-    setIsOpen(true);
-  }, []);
-
-  const scrollToSection = useCallback(
-    (id: SectionId, behavior: ScrollBehavior) => {
-      const element = document.getElementById(id);
-      if (!element) return;
-
-      element.scrollIntoView({ behavior, block: "start" });
-      window.history.pushState(null, "", sectionHref(id));
-      setActiveSectionId(id);
-    },
-    [],
-  );
-
-  const navigateToSection = useCallback(
-    (id: SectionId) => {
-      // Cancel any previous pending navigation
-      const token = ++navigateTokenRef.current;
-  
-      // Close the navigation overlay
-      setIsOpen(false);
-  
-      // Update the active section immediately
-      setActiveSectionId(id);
-  
-      // Allow the closing animation to complete
-      const delay = prefersReducedMotion ? 0 : 470;
-  
-      window.setTimeout(() => {
-        // Prevent outdated navigation requests
-        if (token !== navigateTokenRef.current) return;
-  
-        window.requestAnimationFrame(() => {
-          if (token !== navigateTokenRef.current) return;
-  
-          scrollToSection(
-            id,
-            prefersReducedMotion ? "auto" : "smooth",
-          );
-        });
-      }, delay);
-    },
-    [prefersReducedMotion, scrollToSection],
-  );
-
-  useEffect(() => {
-    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const syncPreference = () => setPrefersReducedMotion(media.matches);
-    syncPreference();
-    media.addEventListener("change", syncPreference);
-    return () => media.removeEventListener("change", syncPreference);
-  }, []);
-
-  useEffect(() => {
-    const hash = window.location.hash.slice(1);
-    if (isSectionId(hash)) {
-      requestAnimationFrame(() => {
-        scrollToSection(hash, "auto");
-      });
-    }
-
-    const onHashChange = () => {
-      const nextHash = window.location.hash.slice(1);
-      if (isSectionId(nextHash)) {
-        setActiveSectionId(nextHash);
-      }
-    };
-
-    window.addEventListener("hashchange", onHashChange);
-    return () => window.removeEventListener("hashchange", onHashChange);
-  }, [scrollToSection]);
-
-  useEffect(() => {
-    const sections = NAVIGATION_ITEMS.map(({ id }) =>
-      document.getElementById(id),
-    ).filter((el): el is HTMLElement => el !== null);
-
-    const observer = new IntersectionObserver(
-      () => {
-        updateActiveSection();
-      },
-      {
-        root: null,
-        rootMargin: "-20% 0px -45% 0px",
-        threshold: [0, 0.15, 0.35, 0.5, 0.75, 1],
-      },
-    );
-
-    sections.forEach((section) => observer.observe(section));
-
-    let ticking = false;
-    const onScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => {
-        updateActiveSection();
-        ticking = false;
-      });
-    };
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll, { passive: true });
-    onScroll();
-
-    return () => {
-      observer.disconnect();
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
-  }, [updateActiveSection]);
-
+  // Prevent the content behind the menu from receiving keyboard focus.
   useEffect(() => {
     const main = document.querySelector("main");
     if (!main) return;
-
-    if (isOpen) {
-      main.setAttribute("inert", "");
-    } else {
-      main.removeAttribute("inert");
-    }
-
+    if (isOpen) main.setAttribute("inert", "");
+    else main.removeAttribute("inert");
     return () => main.removeAttribute("inert");
-  }, [isOpen]);
+  }, [isOpen, pathname]);
 
+  // Lock page scrolling while the overlay is open, restoring the scroll position.
   useEffect(() => {
     if (!isOpen) return;
-
     scrollLockY.current = window.scrollY;
     const { style } = document.body;
     style.position = "fixed";
@@ -231,6 +93,7 @@ export default function FullScreenNavigation() {
     };
   }, [isOpen]);
 
+  // Trap focus inside the menu and allow Escape to close it.
   useEffect(() => {
     if (!isOpen) return;
 
@@ -238,28 +101,19 @@ export default function FullScreenNavigation() {
     const trigger = triggerRef.current;
     if (!overlay) return;
 
-    const focusFirstNavLink = () => {
-      const firstLink = navListRef.current?.querySelector<HTMLElement>("a[href]");
-      firstLink?.focus();
-    };
+    navListRef.current?.querySelector<HTMLElement>("a[href]")?.focus();
 
-    focusFirstNavLink();
-
-    const onKeyDown = (event: globalThis.KeyboardEvent) => {
+    const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         event.preventDefault();
         closeMenu();
         return;
       }
-
       if (event.key !== "Tab") return;
 
-      const navFocusables = getFocusableElements(overlay);
-      const focusables = trigger
-        ? [trigger, ...navFocusables]
-        : navFocusables;
-
-      if (focusables.length === 0) return;
+      const overlayFocusables = getFocusableElements(overlay);
+      const focusables = trigger ? [trigger, ...overlayFocusables] : overlayFocusables;
+      if (!focusables.length) return;
 
       const first = focusables[0];
       const last = focusables[focusables.length - 1];
@@ -270,7 +124,7 @@ export default function FullScreenNavigation() {
           event.preventDefault();
           last.focus();
         }
-      } else if (active === last) {
+      } else if (active === last || !active || !focusables.includes(active)) {
         event.preventDefault();
         first.focus();
       }
@@ -287,14 +141,6 @@ export default function FullScreenNavigation() {
     wasOpenRef.current = isOpen;
   }, [isOpen]);
 
-  const handleTriggerClick = () => {
-    if (isOpen) {
-      closeMenu();
-    } else {
-      openMenu();
-    }
-  };
-
   return (
     <>
       <button
@@ -305,13 +151,9 @@ export default function FullScreenNavigation() {
         aria-controls={NAV_OVERLAY_ID}
         aria-haspopup="dialog"
         aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
-        onClick={handleTriggerClick}
+        onClick={() => setIsOpen((open) => !open)}
         className={`fixed left-0 top-0 z-50 flex min-h-11 min-w-11 items-center justify-center p-3 text-xl leading-none transition-colors sm:p-4 sm:text-2xl ${
-          isOpen
-            ? "text-charcoal"
-            : triggerOnDark
-              ? "text-brand-pink"
-              : "text-charcoal"
+          isOpen ? "text-charcoal" : isOverLanding ? "text-brand-pink" : "text-charcoal"
         } motion-reduce:transition-none`}
       >
         <span aria-hidden="true">{isOpen ? "×" : ">"}</span>
@@ -324,38 +166,31 @@ export default function FullScreenNavigation() {
         aria-modal="true"
         aria-labelledby={titleId}
         aria-hidden={!isOpen}
+        inert={!isOpen}
         className={`fixed inset-0 z-40 flex h-dvh w-full flex-col bg-canvas transition-transform duration-[450ms] ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${
           isOpen ? "translate-x-0" : "-translate-x-full pointer-events-none"
         }`}
       >
-        <h2 id={titleId} className="sr-only">
-          Site navigation
-        </h2>
-
+        <h2 id={titleId} className="sr-only">Site navigation</h2>
         <nav
           aria-label="Primary"
           className="flex flex-1 flex-col justify-center px-8 pb-16 pt-24 sm:px-12 md:px-16 lg:px-24"
         >
           <ul ref={navListRef} className="flex flex-col gap-6 sm:gap-8 md:gap-10">
-            {NAVIGATION_ITEMS.map(({ id, number, label }) => {
-              const isActive = id === activeSectionId;
+            {NAVIGATION_ITEMS.map(({ number, label, href }) => {
+              const isActive = isActiveRoute(pathname, href);
               return (
-                <li key={id}>
-                  <a
-                    href={sectionHref(id)}
-                    aria-current={isActive ? "location" : undefined}
-                    onClick={(event) => {
-                      event.preventDefault();
-                      navigateToSection(id);
-                    }}
+                <li key={href}>
+                  <Link
+                    href={href}
+                    aria-current={isActive ? "page" : undefined}
+                    onClick={closeMenu}
                     className={`block text-2xl tracking-wide sm:text-3xl md:text-4xl lg:text-[2.75rem] lg:leading-tight ${
-                      isActive
-                        ? "font-bold text-brand-blue"
-                        : "font-normal text-charcoal"
+                      isActive ? "font-bold text-brand-blue" : "font-normal text-charcoal"
                     }`}
                   >
                     {number} / {label}
-                  </a>
+                  </Link>
                 </li>
               );
             })}
