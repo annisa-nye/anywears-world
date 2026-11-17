@@ -1,29 +1,32 @@
-import About from "@/components/About";
-import Archive from "@/components/Archive";
-import BusinessCard from "@/components/BusinessCard";
-import Everywhere from "@/components/Everywhere";
-import Experience from "@/components/Experience";
-import FullScreenNavigation from "@/components/FullScreenNavigation";
-import Landing from "@/components/Landing";
-import ComingSoon from "@/components/ComingSoon";
+import About from "@/components/home/About";
+import Aftercare from "@/components/home/Aftercare";
+import ArchivePreview from "@/components/home/ArchivePreview";
+import BusinessCard from "@/components/home/BusinessCard";
+import Landing from "@/components/home/Landing";
+
+import FullScreenNavigation from "@/components/layout/FullScreenNavigation";
 
 export default function Home() {
-    // Show only the business card when SITE_MODE is "coming-soon"
-    if (process.env.SITE_MODE === "coming-soon") {
-      return <ComingSoon />;
-    }
-    // Otherwise, show the full website
-    return (
-      <>
-        <FullScreenNavigation />
-        <main>
-          <Landing />
-          <About />
-          <Archive />
-          <Experience />
-          <Everywhere />
-          <BusinessCard />
-        </main>
-      </>
-    );
+  return (
+    <>
+      <FullScreenNavigation />
+
+      <main>
+        {/* Prologue */}
+        <Landing />
+
+        {/* 01 — The beginning */}
+        <About />
+
+        {/* 02 — The discovery */}
+        <ArchivePreview />
+
+        {/* 03 — The experience */}
+        <Aftercare />
+
+        {/* 04 — The invitation */}
+        <BusinessCard />
+      </main>
+    </>
+  );
 }

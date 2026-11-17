@@ -1,4 +1,4 @@
-import FlippingCard from "./business-card/FlippingCard";
+import FlippingCard from "@/components/business-card/FlippingCard";
 
 export default function BusinessCard() {
   return (

@@ -1,4 +1,3 @@
-
 import Image from "next/image";
 
 export default function About() {
@@ -38,7 +37,7 @@ export default function About() {
           <p className="text-base font-normal leading-relaxed md:text-lg">
             a little corner of the internet for everything{" "}
             <span className="font-enter text-[1.6em] lowercase leading-none">
-            anywears
+              anywears
             </span>{" "}
             has been, and everywhere it&apos;s going.
           </p>
