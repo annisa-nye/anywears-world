@@ -73,7 +73,6 @@ export default function Aftercare() {
               md:text-base
             "
           >
-            a little care goes a long way.
             a collection of kind words
             from the people who wore them next.
           </p>
