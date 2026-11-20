@@ -14,7 +14,7 @@ export const kindWords: ReviewImage[] = [
   ["gina2025_", "06-gina2025-toff.jpeg"],
   ["b0nnieee", "07-b0nnieee.jpeg"],
   ["laurajanebelll", "08-laurajanebelll.jpeg"],
-  ["ninaaina", "09-ninaaina.jpeg"],
+  ["soph228", "09-soph228.jpeg"],
   ["m1ascha3f3r", "10-m1ascha3f3r.jpeg"],
   ["mina000111", "11-mina000111.jpeg"],
   ["915emi", "12-915emi-toff.jpeg"],
@@ -28,7 +28,7 @@ export const kindWords: ReviewImage[] = [
   ["thisbutvelveteen", "20-thisbutvelveteen.jpeg"],
   ["pips379", "21-pips379.jpeg"],
   ["alana1988", "22-alana1988.jpeg"],
-  ["soph228", "23-soph228.jpeg"],
+  ["ninaaina", "23-ninaaina.jpeg"],
   ["becwallace", "24-becwallace.jpeg"],
   ["elizaaboydd", "25-elizaaboydd-toff.jpeg"],
 ].map(([username, filename]) => ({

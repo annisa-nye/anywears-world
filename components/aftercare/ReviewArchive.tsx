@@ -31,7 +31,7 @@ export default function ReviewArchive() {
           md:text-sm
         "
       >
-        show more reviews ({kindWords.length}) ↗
+        show more reviews ↗
       </button>
 
       <dialog
@@ -56,7 +56,7 @@ export default function ReviewArchive() {
             <div>
               <h2 className="text-sm lowercase">kind words.</h2>
               <p className="mt-2 text-xs text-charcoal/50">
-                {kindWords.length} notes from near and far.
+                little notes from near and far.
               </p>
             </div>
 
@@ -82,28 +82,31 @@ export default function ReviewArchive() {
 
           {selected === null ? (
             <div className="mt-6 min-h-0 flex-1 overflow-y-auto">
-              <div className="grid grid-cols-2 gap-3 pb-6 md:grid-cols-3 md:gap-5">
+              <div className="mx-auto grid w-full max-w-3xl grid-cols-1 gap-7 pb-8 md:gap-9">
                 {kindWords.map((review, index) => (
                   <button
                     key={review.src}
                     type="button"
                     onClick={() => setSelected(index)}
                     aria-label={`Enlarge review from ${review.username}`}
-                    className="group text-left"
+                    className="
+                      block w-full min-w-0
+                      cursor-zoom-in text-left
+                      transition-opacity duration-200
+                      hover:opacity-70
+                      focus-visible:outline-2
+                      focus-visible:outline-offset-4
+                      focus-visible:outline-brand-blue
+                    "
                   >
-                    <div className="relative aspect-[4/3] bg-white">
-                      <Image
-                        src={review.src}
-                        alt={`Original Depop review by @${review.username}`}
-                        fill
-                        sizes="(max-width: 767px) 45vw, 28vw"
-                        className="object-contain"
-                      />
-                    </div>
-
-                    <p className="mt-2 text-[10px] text-charcoal/50">
-                      @{review.username}
-                    </p>
+                    <Image
+                      src={review.src}
+                      alt={`Original Depop review by @${review.username}`}
+                      width={1600}
+                      height={450}
+                      sizes="(max-width: 767px) 85vw, 768px"
+                      className="block h-auto w-full"
+                    />
                   </button>
                 ))}
               </div>
