@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -11,6 +12,9 @@ const JOURNEY_SECTIONS = [
 
 type SectionId = (typeof JOURNEY_SECTIONS)[number]["id"];
 
+const HEADER_HEIGHT = 56;
+const READING_LINE = HEADER_HEIGHT + 1;
+
 export default function JourneyNavigation() {
   const [activeSection, setActiveSection] =
     useState<SectionId | null>(null);
@@ -19,32 +23,65 @@ export default function JourneyNavigation() {
     let frame = 0;
 
     function updateActiveSection() {
-      const readingLine = window.innerHeight * 0.4;
-
       const landing = document.getElementById("landing");
 
-        // Only reveal the journey navigation once the entire
-        // Landing section has scrolled above the viewport.
-        if (landing && landing.getBoundingClientRect().bottom > 0) {
+      // Hide journey circles while the Landing is visible.
+      if (
+        landing &&
+        landing.getBoundingClientRect().bottom > 0
+      ) {
         setActiveSection(null);
-        return;
+      } else {
+        let currentSection: SectionId = "about";
+
+        // Determine which journey circle is active.
+        for (const section of JOURNEY_SECTIONS) {
+          const element = document.getElementById(section.id);
+
+          if (
+            element &&
+            element.getBoundingClientRect().top <= READING_LINE
+          ) {
+            currentSection = section.id;
+          }
         }
 
-      let currentSection: SectionId = "about";
-
-      for (const section of JOURNEY_SECTIONS) {
-        const element = document.getElementById(section.id);
-
-        if (!element) continue;
-
-        if (
-          element.getBoundingClientRect().top <= readingLine
-        ) {
-          currentSection = section.id;
-        }
+        setActiveSection(currentSection);
       }
 
-      setActiveSection(currentSection);
+      // Manage sticky heading visibility.
+      JOURNEY_SECTIONS.forEach((section, index) => {
+        const element = document.getElementById(section.id);
+        const heading = document.getElementById(
+          `${section.id}-heading`
+        );
+
+        if (!element || !heading) return;
+
+        // The next chapter begins after the current chapter.
+        // For Aftercare, this is Business Card, NOT the reviews.
+        const nextSection = JOURNEY_SECTIONS[index + 1];
+
+        const nextElement = nextSection
+          ? document.getElementById(nextSection.id)
+          : null;
+
+        const nextChapterHasStarted =
+          nextElement !== null &&
+          nextElement.getBoundingClientRect().top <= READING_LINE;
+
+        // Only use the current section's bottom for
+        // single-viewport chapters.
+        // Aftercare spans two viewports.
+        const sectionHasEnded =
+          section.id !== "aftercare" &&
+          element.getBoundingClientRect().bottom <= READING_LINE;
+
+        heading.dataset.journeyHidden =
+          nextChapterHasStarted || sectionHasEnded
+            ? "true"
+            : "false";
+      });
     }
 
     function scheduleUpdate() {
@@ -57,6 +94,7 @@ export default function JourneyNavigation() {
     window.addEventListener("scroll", scheduleUpdate, {
       passive: true,
     });
+
     window.addEventListener("resize", scheduleUpdate);
 
     return () => {
@@ -66,34 +104,28 @@ export default function JourneyNavigation() {
     };
   }, []);
 
+  function navigateToSection(id: SectionId) {
+    const element = document.getElementById(id);
+    if (!element) return;
 
-    function navigateToSection(id: SectionId) {
-        const element = document.getElementById(id);
-        if (!element) return;
-    
-        const reduceMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-        ).matches;
-    
-        const headerHeight = 56;
-    
-        const targetPosition =
-        window.scrollY +
-        element.getBoundingClientRect().top -
-        headerHeight;
-    
-        window.scrollTo({
-        top: Math.max(0, targetPosition),
-        behavior: reduceMotion ? "auto" : "smooth",
-        });
-    }
-    
-    // Keep the navigation mounted, but visually hidden
-    // while the visitor is viewing the Landing.
-    const isVisible = activeSection !== null;
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
 
-    
-return (
+    const targetPosition =
+      window.scrollY +
+      element.getBoundingClientRect().top -
+      HEADER_HEIGHT;
+
+    window.scrollTo({
+      top: Math.max(0, targetPosition),
+      behavior: reduceMotion ? "auto" : "smooth",
+    });
+  }
+
+  const isVisible = activeSection !== null;
+
+  return (
     <nav
       aria-label="Homepage journey"
       aria-hidden={!isVisible}
@@ -111,7 +143,7 @@ return (
       <div className="flex items-center justify-center">
         {JOURNEY_SECTIONS.map((section, index) => {
           const isActive = activeSection === section.id;
-  
+
           return (
             <div
               key={section.id}
@@ -148,7 +180,7 @@ return (
                   `}
                 />
               </button>
-  
+
               {index < JOURNEY_SECTIONS.length - 1 && (
                 <span
                   aria-hidden="true"
@@ -161,5 +193,4 @@ return (
       </div>
     </nav>
   );
-
 }

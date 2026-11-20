@@ -22,7 +22,7 @@ export default function ViewportSection({
         flex h-[calc(100dvh-3.5rem)]
         min-h-0 flex-col
         scroll-mt-14
-        overflow-hidden
+        overflow-visible
         bg-canvas text-charcoal
         ${className}
       `}

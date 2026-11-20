@@ -1,16 +1,12 @@
-import type { Metadata } from "next";
-import Archive from "@/components/archive/Archive";
-
-export const metadata: Metadata = {
-  title: "archive. — anywears",
-  description:
-    "An independent archive of curated vintage and contemporary fashion.",
-};
+import ComingSoon from "@/components/layout/ComingSoon";
 
 export default function ArchivePage() {
   return (
-    <main className="min-h-dvh bg-canvas text-charcoal">
-      <Archive />
-    </main>
+    <ComingSoon
+      section="the archive"
+      title="good things take time."
+      description="the archive is being carefully assembled."
+      backHref="/#archive"
+    />
   );
 }

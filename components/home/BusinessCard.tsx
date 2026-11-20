@@ -1,5 +1,6 @@
 import ViewportSection from "@/components/layout/ViewportSection";
 import FlippingCard from "@/components/business-card/FlippingCard";
+import StickySectionTitle from "@/components/layout/StickySectionTitle";
 
 export default function BusinessCard() {
   return (
@@ -7,6 +8,7 @@ export default function BusinessCard() {
       id="business-card"
       labelledBy="business-card-heading"
     >
+      <StickySectionTitle id="business-card-heading" title="contact." as="h2" />
       <div
         className="
           flex min-h-0 flex-1
@@ -15,15 +17,7 @@ export default function BusinessCard() {
       >
         {/* Heading and card grouped together */}
         <div className="mx-auto w-full max-w-3xl">
-          <h2
-            id="business-card-heading"
-            className="
-              mb-5 text-sm font-normal
-              lowercase tracking-normal
-            "
-          >
-            take a card.
-          </h2>
+
 
           <FlippingCard />
         </div>

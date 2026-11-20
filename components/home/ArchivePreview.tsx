@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import ViewportSection from "@/components/layout/ViewportSection";
+import StickySectionTitle from "@/components/layout/StickySectionTitle";
 
 const previewImages = [
   {
@@ -21,14 +22,14 @@ const previewImages = [
   },
 ];
 
-// Position each photograph independently on mobile.
-// md: overrides these positions for the desktop row.
+// Mobile: editorial staggered layout.
+// Desktop: horizontal composition with subtle offsets.
 const imageLayouts = [
   // Leather collection — top left
   "left-0 top-[1%] h-[42%] w-[48%] " +
     "md:h-[72%] md:w-[25%] md:-translate-y-6",
 
-  // Turquoise pleats — upper right, lower than bags
+  // Turquoise pleats — upper right
   "right-0 top-[16%] h-[38%] w-[48%] " +
     "md:h-[61%] md:w-[22%] md:translate-y-8",
 
@@ -47,33 +48,32 @@ export default function ArchivePreview() {
       id="archive"
       labelledBy="archive-heading"
     >
-      <div className="flex h-full min-h-0 w-full flex-col">
-        {/* Heading */}
-        <div className="flex shrink-0 items-center justify-between gap-4">
-          <h2
-            id="archive-heading"
-            className="text-sm font-normal lowercase"
-          >
-            archive.
-          </h2>
+      {/* Sticky heading is outside the inner gallery layout */}
+      <StickySectionTitle
+        id="archive-heading"
+        title="archive."
+      />
 
-          <span
-            className="
-              text-[10px] uppercase
-              tracking-[0.12em] text-charcoal/45
-            "
-          >
-            selected objects
-          </span>
-        </div>
+      {/* Gallery and CTA share the remaining viewport height */}
+      <div className="relative flex min-h-0 flex-1 flex-col">
+        {/* Right-aligned editorial label */}
+        <span
+          className="
+            pointer-events-none absolute
+            right-0 top-4
+            text-[10px] uppercase
+            tracking-[0.12em] text-charcoal/45
+          "
+        >
+          selected objects
+        </span>
 
-        {/* Composition occupies the space between heading and CTA */}
+        {/* Image composition */}
         <div className="flex min-h-0 flex-1 py-4 md:py-6">
           <div
             className="
               relative mx-auto h-full
               w-full max-w-[1100px]
-
               md:flex md:items-center
               md:justify-between md:gap-6
             "
@@ -93,10 +93,7 @@ export default function ArchivePreview() {
                   alt={image.alt}
                   fill
                   sizes="(max-width: 767px) 48vw, 25vw"
-                  className="
-                    object-contain
-                    object-center
-                  "
+                  className="object-contain object-center"
                 />
               </figure>
             ))}

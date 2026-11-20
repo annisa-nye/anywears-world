@@ -25,8 +25,11 @@ export default function SiteHeader({
           px-4 sm:px-6
         "
       >
-        {/* Left: reserved for the existing global navigation trigger */}
-        <div aria-hidden="true" />
+
+        {/* Left: active editorial section title */}
+        <div className="flex min-w-0 items-center justify-start">
+          {showJourney}
+        </div>
 
         {/* Centre: homepage journey tracker */}
         <div className="flex items-center justify-center">

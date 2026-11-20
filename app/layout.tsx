@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Allura, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import FullScreenNavigation from "@/components/layout/FullScreenNavigation";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,7 +35,6 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${allura.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-canvas text-charcoal font-sans">
-      <FullScreenNavigation />
         {children}
       </body>
     </html>

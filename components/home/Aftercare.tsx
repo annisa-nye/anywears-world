@@ -1,25 +1,28 @@
-
 import Image from "next/image";
 import ViewportSection from "@/components/layout/ViewportSection";
 import FeaturedReviews from "@/components/aftercare/FeaturedReviews";
 import ReviewArchive from "@/components/aftercare/ReviewArchive";
+import StickySectionTitle from "@/components/layout/StickySectionTitle";
 
 export default function Aftercare() {
   return (
-    <>
+    <div className="relative">
+      {/* Shared heading across both Aftercare viewports */}
+      <StickySectionTitle
+        id="aftercare-heading"
+        title="aftercare."
+        as="h2"
+        className="
+          ml-6 mt-6 -mb-14
+          md:ml-12 md:mt-10 
+        "
+      />
       {/* Viewport 01 — Introduction and preparation */}
       <ViewportSection
         id="aftercare"
         labelledBy="aftercare-heading"
       >
         <div className="flex h-full min-h-0 flex-col">
-          <h2
-            id="aftercare-heading"
-            className="shrink-0 text-sm font-normal lowercase"
-          >
-            aftercare.
-          </h2>
-
           <div className="shrink-0 space-y-3 pt-6 md:pt-10">
             <h3 className="text-3xl font-normal tracking-tight md:text-5xl">
               the little things.
@@ -69,20 +72,11 @@ export default function Aftercare() {
       {/* Viewport 02 — Real customer experiences */}
       <ViewportSection
         id="aftercare-reviews"
-        labelledBy="aftercare-reviews-heading"
+        labelledBy="aftercare-heading"
       >
         <div className="flex h-full min-h-0 flex-col">
           <div className="flex shrink-0 items-center justify-between gap-4">
-            <h2
-              id="aftercare-reviews-heading"
-              className="text-sm font-normal lowercase"
-            >
-              kind words.
-            </h2>
 
-            <span className="text-[10px] uppercase tracking-wide text-charcoal/45">
-              from those who wore them next
-            </span>
           </div>
 
           <div className="flex min-h-0 flex-1 flex-col py-5 md:py-8">
@@ -98,6 +92,6 @@ export default function Aftercare() {
           </div>
         </div>
       </ViewportSection>
-    </>
+    </div>
   );
 }

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import ViewportSection from "@/components/layout/ViewportSection";
+import StickySectionTitle from "@/components/layout/StickySectionTitle";
 
 export default function About() {
   return (
@@ -8,12 +9,7 @@ export default function About() {
       labelledBy="about-heading"
     >
       {/* Section heading */}
-      <h2
-        id="about-heading"
-        className="shrink-0 text-sm font-normal lowercase tracking-normal"
-      >
-        about
-      </h2>
+      <StickySectionTitle id="about-heading" title="about." as="h2" />
 
       {/* Photograph + introduction */}
       <div
