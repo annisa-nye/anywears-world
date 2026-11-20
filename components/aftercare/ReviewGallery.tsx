@@ -2,11 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-
-export type ReviewImage = {
-  src: string;
-  username: string;
-};
+import type { ReviewImage } from "@/lib/review-data";
 
 type ReviewGalleryProps = {
   reviews: ReviewImage[];
