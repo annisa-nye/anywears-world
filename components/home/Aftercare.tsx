@@ -23,7 +23,7 @@ export default function Aftercare() {
         labelledBy="aftercare-heading"
       >
         <div className="flex h-full min-h-0 flex-col">
-          <div className="shrink-0 space-y-3 pt-6 md:pt-10">
+          <div className="shrink-0 space-y-3 pt-12 md:pt-10">
             <h3 className="text-3xl font-normal tracking-tight md:text-5xl">
               the little things.
             </h3>
@@ -76,6 +76,7 @@ export default function Aftercare() {
       >
         <div className="flex h-full min-h-0 flex-col">
           <div className="flex shrink-0 items-center justify-between gap-4">
+
 
           </div>
 
