@@ -52,7 +52,6 @@ export default function Aftercare() {
               />
             </figure>
 
-
             <figure className="relative min-h-0 md:translate-y-5">
               <Image
                 src="/images/aftercare/packaging/aftercare_lace.jpeg"
@@ -75,30 +74,13 @@ export default function Aftercare() {
         id="aftercare-reviews"
         labelledBy="aftercare-heading"
       >
-        <div className="flex h-full min-h-0 flex-col text-right">
-          
-          {/* The handoff */}
-          <h3 
-              id="aftercare-reviews-heading"
-              className="
-                mt-3 text-2xl font-normal leading-tight tracking-tight md:mt-5 md:text-4xl
-              "
-            >
-              and in their own words.
-            </h3>
-            <p className="text-xs lowercase tracking-wide text-charcoal/45">
-              the feeling was mutual.
-            </p>
-          <div className="shrink-0 pt-5 md:pt-8">
-            
-          
-          </div>
+        <div className="flex h-full min-h-0 flex-col">
           <div className="flex shrink-0 items-center justify-between gap-4">
 
 
           </div>
 
-          <div className="flex min-h-0 flex-1 flex-col pt-4 pb-6 md:pt-6 md:pb-10">
+          <div className="flex min-h-0 flex-1 flex-col py-5 md:py-8">
             <FeaturedReviews />
           </div>
 

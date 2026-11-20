@@ -19,7 +19,7 @@ export default function ViewportSection({
       aria-labelledby={labelledBy}
       className={`
         relative
-        flex h-[calc(100svh-3.5rem)]
+        flex h-[calc(100dvh-3.5rem)]
         min-h-0 flex-col
         scroll-mt-14
         overflow-visible

@@ -77,14 +77,7 @@ export default function About() {
           <p className="text-base font-normal leading-relaxed md:text-lg">
             an independent archive of things found, worn and passed along.
           </p>
-
-          <p className="text-base font-normal leading-relaxed md:text-lg">
-            a little corner of the internet for everything{" "}
-            <span className="text-brand-blue lowercase leading-none">
-              anywears
-            </span>{" "}
-            has been, and everywhere it&apos;s going.
-          </p>
+          
         </div>
       </div>
     </ViewportSection>

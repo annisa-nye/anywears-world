@@ -14,6 +14,7 @@ export default function Home() {
       {/* Sticky editorial header */}
       <SiteHeader showJourney />
 
+
       {/* 01 — The beginning */}
       <About />
 
