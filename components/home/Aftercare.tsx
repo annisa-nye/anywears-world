@@ -51,7 +51,7 @@ export default function Aftercare() {
 
             <figure className="relative min-h-0 md:translate-y-5">
               <Image
-                src="/images/aftercare/packaging/aftercare_lace.jpeg"
+                src="/images/aftercare/packaging/aftercare_blue.jpeg"
                 alt="Hand-wrapped parcel finished with lace"
                 fill
                 sizes="(max-width: 767px) 40vw, 35vw"
