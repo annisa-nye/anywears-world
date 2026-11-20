@@ -1,27 +1,56 @@
 export type ReviewImage = {
-    username: string;
-    src: string;
-  };
+  username: string;
+  src: string;
+};
+
+const reviewFolder = "/images/aftercare/reviews/kind-words";
 
 export const kindWords: ReviewImage[] = [
-    { username: "natbro94", src: "/images/aftercare/reviews/kind-words/01-natbro94.jpeg" },
-    { username: "mikkialba", src: "/images/aftercare/reviews/kind-words/02-mikkialba.jpeg" },
-    { username: "pips379", src: "/images/aftercare/reviews/kind-words/03-pips379.jpeg" },
-    { username: "jnnae_632", src: "/images/aftercare/reviews/kind-words/04-jnnae632.jpeg" },
-    { username: "allie_p123", src: "/images/aftercare/reviews/kind-words/05-allie-p123.jpeg" },
-    { username: "alana1988", src: "/images/aftercare/reviews/kind-words/06-alana1988.jpeg" },
-    { username: "b0nnieee", src: "/images/aftercare/reviews/kind-words/07-b0nnieee.jpeg" },
-    { username: "laurajanebelll", src: "/images/aftercare/reviews/kind-words/08-laurajanebelll.jpeg" },
-    { username: "ninaaina", src: "/images/aftercare/reviews/kind-words/09-ninaaina.jpeg" },
-    { username: "m1ascha3f3r", src: "/images/aftercare/reviews/kind-words/10-m1ascha3f3r.jpeg" },
-    { username: "mina000111", src: "/images/aftercare/reviews/kind-words/11-mina000111.jpeg" },
-    { username: "soph228", src: "/images/aftercare/reviews/kind-words/12-soph228.jpeg" },
-    { username: "kaylakagaras_", src: "/images/aftercare/reviews/kind-words/13-kaylakagaras.jpeg" },
-    { username: "becwallace", src: "/images/aftercare/reviews/kind-words/14-becwallace.jpeg" },
-    { username: "bryannaarnold8", src: "/images/aftercare/reviews/kind-words/15-bryannaarnold8.jpeg" },
-    { username: "goldenkiwiz", src: "/images/aftercare/reviews/kind-words/16-goldenkiwiz.jpeg" },
-    { username: "oaticedlatte", src: "/images/aftercare/reviews/kind-words/17-oaticedlatte.jpeg" },
-    { username: "sydneyarchive", src: "/images/aftercare/reviews/kind-words/18-sydneyarchive.jpeg" },
-    { username: "katesteph87", src: "/images/aftercare/reviews/kind-words/19-katesteph87.jpeg" },
-    { username: "thisbutvelveteen", src: "/images/aftercare/reviews/kind-words/20-thisbutvelveteen.jpeg" },
-  ];
+  ["natbro94", "01-natbro94.jpeg"],
+  ["ddowi", "02-ddowi-toff.jpeg"],
+  ["jnnae_632", "03-jnnae632.jpeg"],
+  ["allie_p123", "04-allie-p123.jpeg"],
+  ["mikkialba", "05-mikkialba.jpeg"],
+  ["gina2025_", "06-gina2025-toff.jpeg"],
+  ["b0nnieee", "07-b0nnieee.jpeg"],
+  ["laurajanebelll", "08-laurajanebelll.jpeg"],
+  ["ninaaina", "09-ninaaina.jpeg"],
+  ["m1ascha3f3r", "10-m1ascha3f3r.jpeg"],
+  ["mina000111", "11-mina000111.jpeg"],
+  ["915emi", "12-915emi-toff.jpeg"],
+  ["kaylakagaras", "13-kaylakagaras.jpeg"],
+  ["vintagebybelle", "14-vintagebybelle-toff.jpeg"],
+  ["bryannaarnold8", "15-bryannaarnold8.jpeg"],
+  ["goldenkiwiz", "16-goldenkiwiz.jpeg"],
+  ["oaticedlatte", "17-oaticedlatte.jpeg"],
+  ["sydneyarchive", "18-sydneyarchive.jpeg"],
+  ["katesteph87", "19-katesteph87.jpeg"],
+  ["thisbutvelveteen", "20-thisbutvelveteen.jpeg"],
+  ["pips379", "21-pips379.jpeg"],
+  ["alana1988", "22-alana1988.jpeg"],
+  ["soph228", "23-soph228.jpeg"],
+  ["becwallace", "24-becwallace.jpeg"],
+  ["elizaaboydd", "25-elizaaboydd-toff.jpeg"],
+].map(([username, filename]) => ({
+  username,
+  src: `${reviewFolder}/${filename}`,
+}));
+
+export const featuredReviews = [
+  {
+    id: "fur-jacket",
+    item: "vintage fur jacket",
+    image: "/images/aftercare/featured/fur-jacket.jpeg",
+    username: "jnnae_632",
+    review:
+      "Such a beautiful statement piece. Came exactly as described in the cutest packaging. Communication is fab and delivery was quick. Will be buying again real soon! 🧡",
+  },
+  {
+    id: "toff-loadstone",
+    item: "toff & loadstone",
+    image: "/images/aftercare/featured/toff-loadstone.jpeg",
+    username: "gina2025_",
+    review:
+      "Bag came so beautifully packed and exactly as described 💗",
+  },
+];
