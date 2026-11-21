@@ -1,34 +1,27 @@
-import About from "@/components/About";
-import Archive from "@/components/Archive";
-import BusinessCard from "@/components/BusinessCard";
-import ComingSoon from "@/components/ComingSoon";
-import Everywhere from "@/components/Everywhere";
-import Experience from "@/components/Experience";
-import FullScreenNavigation from "@/components/FullScreenNavigation";
-import Landing from "@/components/Landing";
+import SiteHeader from "@/components/layout/SiteHeader";
+import Landing from "@/components/home/Landing";
+import About from "@/components/home/About";
+import ArchivePreview from "@/components/home/ArchivePreview";
+import BusinessCard from "@/components/home/BusinessCard";
+import SectionDivider from "@/components/layout/SectionDivider";
 
 export default function Home() {
-  // Production: two vertically scrolling sections
-  if (process.env.SITE_MODE === "coming-soon") {
-    return (
-      <main>
-        <Landing enterHref="#reveal" />
-        <ComingSoon />
-      </main>
-    );
-  }
-
-  // Development: complete website
   return (
     <>
-      <FullScreenNavigation />
+      <SiteHeader showJourney />
+
       <main>
         <Landing />
         <About />
-        <Archive />
-        <Experience />
-        <Everywhere />
+        <SectionDivider />
+        <ArchivePreview />
+        <SectionDivider />
         <BusinessCard />
+         {/* Extra scroll space for the final sticky heading */}
+         <div
+          aria-hidden="true"
+          className="h-24 bg-canvas md:h-32"
+        />
       </main>
     </>
   );
