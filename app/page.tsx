@@ -13,10 +13,11 @@ export default function Home() {
       <main>
         <Landing />
         <About />
-        <SectionDivider />
+        <SectionDivider page="II" />
         <ArchivePreview />
-        <SectionDivider />
+        <SectionDivider page="III"/>
         <BusinessCard />
+        <SectionDivider page="IV"/>
          {/* Extra scroll space for the final sticky heading */}
          <div
           aria-hidden="true"

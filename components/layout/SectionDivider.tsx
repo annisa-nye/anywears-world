@@ -1,23 +1,28 @@
-import Image from "next/image";
+type SectionDividerProps = {
+  page: string;
+};
 
-export default function SectionDivider() {
+export default function SectionDivider({
+  page,
+}: SectionDividerProps) {
   return (
     <div
       aria-hidden="true"
       className="flex h-20 items-center justify-center bg-canvas"
     >
-      <div className="flex items-center gap-4">
-        <span className="h-px w-12 bg-charcoal/20" />
+      <div className="flex w-full max-w-[180px] items-center gap-4">
+        <span className="h-px flex-1 bg-charcoal/25" />
 
-        <Image
-          src="/images/branding/flower.png"
-          alt=""
-          width={24}
-          height={24}
-          className="h-6 w-6 object-contain"
-        />
+        <span
+          className="
+            shrink-0 text-[10px] font-normal
+            uppercase tracking-[0.18em] text-brand-blue
+          "
+        >
+          P. {page}
+        </span>
 
-        <span className="h-px w-12 bg-charcoal/20" />
+        <span className="h-px flex-1 bg-charcoal/25" />
       </div>
     </div>
   );
