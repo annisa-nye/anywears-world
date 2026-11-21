@@ -40,6 +40,7 @@ export default function ComingSoon({
             alt="Animated Anywears heartbeat"
             width={560}
             height={560}
+            preload
             unoptimized
             className="h-auto max-h-[45svh] w-full object-contain"
           />
