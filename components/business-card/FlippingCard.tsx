@@ -1,5 +1,4 @@
 "use client";
-
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
@@ -79,7 +78,11 @@ export default function FlippingCard() {
             >
             <button
                 type="button"
-                onClick={() => setIsFlipped(true)}
+                onClick={() => {
+                  hasAutoFlipped.current = true;
+                  setIsFlipped(true);
+
+                }}
                 aria-label="Flip business card to view the back"
                 className="relative flex h-full w-full cursor-pointer
                 items-end justify-start overflow-hidden
@@ -161,11 +164,9 @@ export default function FlippingCard() {
                   onClick={(event) => event.stopPropagation()}
                   className="
                     inline-block text-inherit
-                    underline underline-offset-4
-                    decoration-transparent 
-                    transition-colors
-                    hover:decoration-current
-                    focus-visible:decoration-current
+                    underline underline-offset-4 decoration-0.5
+                    transition-opacity duration-200
+                    hover:opacity-60
                     focus-visible:outline-2
                     focus-visible:outline-brand-blue
                   "
@@ -173,7 +174,7 @@ export default function FlippingCard() {
                   desk@anywears.world
                 </a>
                   <span className="mt-3">
-                    melbourne -> berlin
+                    melbourne → berlin
                   </span>
                 </div>
 
