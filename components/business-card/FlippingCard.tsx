@@ -1,20 +1,55 @@
-
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
-
-const VINTED_URL =
-  "https://www.vinted.com.au/member/3165405155/";
-
-const INSTAGRAM_URL =
-  "https://www.instagram.com/anywears.shop/";
-
-const DEPOP_URL =
-  "https://www.depop.com/anywearshop/";
+import { useEffect, useRef, useState } from "react";
 
 export default function FlippingCard() {
   const [isFlipped, setIsFlipped] = useState(false);
+  const hasAutoFlipped = useRef(false);
+  useEffect(() => {
+    const contact = document.getElementById("contact");
+  
+    if (!contact) return;
+  
+    let timer: ReturnType<typeof setTimeout> | null = null;
+  
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (hasAutoFlipped.current) return;
+  
+        if (entry.isIntersecting) {
+          // Wait two seconds after Contact becomes visible.
+          timer = setTimeout(() => {
+            // Respect reduced-motion preferences.
+            const reduceMotion = window.matchMedia(
+              "(prefers-reduced-motion: reduce)"
+            ).matches;
+  
+            if (!reduceMotion && !hasAutoFlipped.current) {
+              setIsFlipped(true);
+              hasAutoFlipped.current = true;
+            }
+          }, 2000);
+        } else if (timer !== null) {
+          clearTimeout(timer);
+          timer = null;
+        }
+      },
+      {
+        threshold: 0.65,
+      }
+    );
+  
+    observer.observe(contact);
+  
+    return () => {
+      observer.disconnect();
+  
+      if (timer !== null) {
+        clearTimeout(timer);
+      }
+    };
+  }, []);
 
   return (
     <div className="mx-auto w-full max-w-[560px]">
@@ -121,40 +156,29 @@ export default function FlippingCard() {
                     text-[clamp(0.6rem,1.5vw,0.95rem)]
                     leading-[1.2]"
                 >
-                  <a
-                    href={DEPOP_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:underline underline-offset-2"
-                  >
-                    depop: @anywearshop
-                  </a>
-
-                  <a
-                    href={VINTED_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:underline underline-offset-2"
-                  >
-                    vinted: @anywearshop
-                  </a>
-
-                  <a
-                    href={INSTAGRAM_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:underline underline-offset-2"
-                  >
-                    instagram: @anywears.shop
-                  </a>
-
+                <a
+                  href="mailto:desk@anywears.world"
+                  onClick={(event) => event.stopPropagation()}
+                  className="
+                    inline-block text-inherit
+                    underline underline-offset-4
+                    decoration-transparent 
+                    transition-colors
+                    hover:decoration-current
+                    focus-visible:decoration-current
+                    focus-visible:outline-2
+                    focus-visible:outline-brand-blue
+                  "
+                >
+                  desk@anywears.world
+                </a>
                   <span className="mt-3">
-                    melbourne, au
+                    melbourne -> berlin
                   </span>
                 </div>
 
                 <Image
-                  src="/images/branding/flower.png"
+                  src="/images/branding/logo.png"
                   alt="Anywears flower symbol"
                   width={960}
                   height={960}
@@ -167,11 +191,6 @@ export default function FlippingCard() {
           </div>
         </div>
       </div>
-
-    
-        <p className="mt-7 text-center text-[11px] font-normal lowercase tracking-[0.08em] text-charcoal/45">
-        click to turn ↻
-        </p>
 
     </div>
   );

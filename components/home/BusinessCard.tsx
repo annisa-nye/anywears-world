@@ -1,6 +1,7 @@
 import ViewportSection from "@/components/layout/ViewportSection";
-import FlippingCard from "@/components/business-card/FlippingCard";
 import StickySectionTitle from "@/components/layout/StickySectionTitle";
+import FlippingCard from "@/components/business-card/FlippingCard";
+import ShopLinks from "@/components/business-card/ShopLinks";
 
 export default function BusinessCard() {
   return (
@@ -17,6 +18,11 @@ export default function BusinessCard() {
       <div className="flex min-h-0 flex-1 flex-col justify-center">
         <div className="mx-auto w-full max-w-3xl">
           <FlippingCard />
+
+          {/* Shop links directly beneath the card */}
+          <div className="mt-10 md:mt-8">
+            <ShopLinks />
+          </div>
         </div>
       </div>
     </ViewportSection>
