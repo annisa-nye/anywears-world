@@ -6,7 +6,7 @@ const JOURNEY_SECTIONS = [
   { id: "landing", label: "Home" },
   { id: "about", label: "About" },
   { id: "archive", label: "Archive" },
-  { id: "business-card", label: "Contact" },
+  { id: "contact", label: "Contact" },
 ] as const;
 
 type SectionId = (typeof JOURNEY_SECTIONS)[number]["id"];
@@ -30,6 +30,18 @@ export default function JourneyNavigation() {
         landing.getBoundingClientRect().bottom > 0
       ) {
         setActiveSection(null);
+      
+        // Remove the section hash when returning to Landing.
+        const homeUrl =
+          window.location.pathname + window.location.search;
+      
+        if (window.location.hash) {
+          window.history.replaceState(
+            window.history.state,
+            "",
+            homeUrl
+          );
+        }
       } else {
         let currentSection: SectionId = "about";
 
@@ -46,6 +58,22 @@ export default function JourneyNavigation() {
         }
 
         setActiveSection(currentSection);
+
+        const newHash = `#${currentSection}`;
+
+        const newUrl = `${window.location.pathname}${window.location.search}${newHash}`;
+
+        if (
+          window.location.pathname +
+            window.location.search +
+            window.location.hash !== newUrl
+        ) {
+          window.history.replaceState(
+            window.history.state,
+            "",
+            newUrl
+          );
+        }
       }
 
       // Manage sticky heading visibility.
@@ -61,8 +89,6 @@ export default function JourneyNavigation() {
         if (!element || !heading) return;
 
 
-        // The next chapter begins after the current chapter.
-        // For Aftercare, this is Business Card, NOT the reviews.
         const nextSection = JOURNEY_SECTIONS[index + 1];
 
         const nextElement = nextSection
