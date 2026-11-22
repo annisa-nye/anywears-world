@@ -5,50 +5,65 @@ import { useEffect, useRef, useState } from "react";
 export default function FlippingCard() {
   const [isFlipped, setIsFlipped] = useState(false);
   const hasAutoFlipped = useRef(false);
+
   useEffect(() => {
     const contact = document.getElementById("contact");
-  
     if (!contact) return;
-  
+
     let timer: ReturnType<typeof setTimeout> | null = null;
-  
+    let isInContact = false;
+
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    );
+
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (hasAutoFlipped.current) return;
-  
-        if (entry.isIntersecting) {
-          // Wait two seconds after Contact becomes visible.
-          timer = setTimeout(() => {
-            // Respect reduced-motion preferences.
-            const reduceMotion = window.matchMedia(
-              "(prefers-reduced-motion: reduce)"
-            ).matches;
-  
-            if (!reduceMotion && !hasAutoFlipped.current) {
+        const isVisible =
+          entry.isIntersecting &&
+          entry.intersectionRatio >= 0.65;
+
+        if (isVisible && !isInContact) {
+          isInContact = true;
+
+          if (!reducedMotion.matches && !hasAutoFlipped.current) {
+            timer = setTimeout(() => {
               setIsFlipped(true);
               hasAutoFlipped.current = true;
-            }
-          }, 2000);
-        } else if (timer !== null) {
-          clearTimeout(timer);
-          timer = null;
+              timer = null;
+            }, 2000);
+          }
+        }
+
+        if (!isVisible && isInContact) {
+          isInContact = false;
+
+          if (timer !== null) {
+            clearTimeout(timer);
+            timer = null;
+          }
+
+          // Reset the card whenever Contact is left.
+          setIsFlipped(false);
+          hasAutoFlipped.current = false;
         }
       },
       {
-        threshold: 0.65,
+        threshold: [0, 0.65, 1],
       }
     );
-  
+
     observer.observe(contact);
-  
+
     return () => {
       observer.disconnect();
-  
+
       if (timer !== null) {
         clearTimeout(timer);
       }
     };
   }, []);
+
 
   return (
     <div className="mx-auto w-full max-w-[560px]">
@@ -56,10 +71,12 @@ export default function FlippingCard() {
       <div style={{ perspective: "1200px" }}>
         {/* Rotating card */}
         <div
-          className="relative aspect-[1.6] w-full
+          className="
+            relative aspect-[1.6] w-full
             rounded-[20px]
-            transition-transform duration-700
-            ease-in-out motion-reduce:transition-none"
+            transition-transform duration-1000
+            ease-[cubic-bezier(0.22,1,0.36,1)]
+            motion-reduce:transition-none"
           style={{
             transformStyle: "preserve-3d",
             transform: isFlipped
@@ -116,6 +133,7 @@ export default function FlippingCard() {
             onClick={(event) => {
                 // Don't flip when clicking a social link.
                 if ((event.target as HTMLElement).closest("a")) return;
+                hasAutoFlipped.current = true;
                 setIsFlipped(false);
             }}
 >
