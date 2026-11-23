@@ -1,4 +1,3 @@
-
 import fs from "node:fs";
 import path from "node:path";
 import Image from "next/image";
@@ -20,15 +19,7 @@ function landingGifExists(): boolean {
   return fs.existsSync(absolutePath);
 }
 
-type LandingProps = {
-  enterHref?: string;
-  showIntroductionLabel?: boolean;
-};
-
-export default function Landing({
-  enterHref = "#about",
-  showIntroductionLabel = false,
-}: LandingProps) {
+export default function Landing() {
   const hasLandingGif = landingGifExists();
 
   return (
@@ -41,10 +32,13 @@ export default function Landing({
         Anywears World
       </h1>
 
+      {/* Top spacing */}
       <div
         className="min-h-12 shrink-0 basis-[10dvh] sm:basis-[12dvh]"
         aria-hidden="true"
       />
+
+      {/* Animated artwork */}
       <div className="flex min-h-0 flex-1 items-center justify-center px-6 pb-4 pt-2 sm:px-10">
         <figure className="mx-auto flex max-h-[min(52dvh,36rem)] w-full max-w-[min(92vw,28rem)] flex-col items-center justify-center">
           {hasLandingGif ? (
@@ -67,11 +61,11 @@ export default function Landing({
         </figure>
       </div>
 
+      {/* Scroll to About */}
       <div className="flex shrink-0 justify-center px-6 pb-[max(1.75rem,env(safe-area-inset-bottom))] pt-4 sm:pb-10 sm:pt-6">
-        
         <a
-          href={enterHref}
-          aria-label="Scroll down"
+          href="#about"
+          aria-label="Scroll down to About"
           className="inline-flex h-12 w-12 items-center justify-center
             text-brand-pink transition-transform duration-300
             hover:translate-y-1
@@ -96,7 +90,6 @@ export default function Landing({
             <path d="m5 13 7 7 7-7" />
           </svg>
         </a>
-
       </div>
     </section>
   );

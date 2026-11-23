@@ -1,31 +1,92 @@
-
 "use client";
-
 import Image from "next/image";
-import { useState } from "react";
-
-const VINTED_URL =
-  "https://www.vinted.com.au/member/3165405155/";
-
-const INSTAGRAM_URL =
-  "https://www.instagram.com/anywears.shop/";
-
-const DEPOP_URL =
-  "https://www.depop.com/anywearshop/";
+import { useEffect, useRef, useState } from "react";
 
 export default function FlippingCard() {
   const [isFlipped, setIsFlipped] = useState(false);
+  const hasAutoFlipped = useRef(false);
+
+  useEffect(() => {
+    const contact = document.getElementById("contact");
+    if (!contact) return;
+
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    let isInContact = false;
+
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    );
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const isVisible =
+          entry.isIntersecting &&
+          entry.intersectionRatio >= 0.40;
+
+        if (isVisible && !isInContact) {
+          isInContact = true;
+
+          if (!reducedMotion.matches && !hasAutoFlipped.current) {
+            timer = setTimeout(() => {
+              setIsFlipped(true);
+              hasAutoFlipped.current = true;
+              timer = null;
+            }, 2000);
+          }
+        }
+
+        if (!isVisible && isInContact) {
+          isInContact = false;
+
+          if (timer !== null) {
+            clearTimeout(timer);
+            timer = null;
+          }
+
+          // Reset the card whenever Contact is left.
+          setIsFlipped(false);
+          hasAutoFlipped.current = false;
+        }
+      },
+      {
+        threshold: [0, 0.40, 1],
+      }
+    );
+
+    observer.observe(contact);
+
+    return () => {
+      observer.disconnect();
+
+      if (timer !== null) {
+        clearTimeout(timer);
+      }
+    };
+  }, []);
+
 
   return (
-    <div className="mx-auto w-full max-w-[560px]">
+    <div className="relative mx-auto w-full max-w-[560px] pt-7">
+      <span
+        aria-hidden="true"
+        className="
+          pointer-events-none absolute right-0 top-0
+          text-[10px] uppercase tracking-[0.12em]
+          text-charcoal/45
+        "
+      >
+        click / tap to interact ↻
+      </span>
       {/* Perspective container */}
       <div style={{ perspective: "1200px" }}>
         {/* Rotating card */}
         <div
-          className="relative aspect-[1.6] w-full
+          className="
+            relative aspect-[1.6] w-full
             rounded-[20px]
-            transition-transform duration-700
-            ease-in-out motion-reduce:transition-none"
+            transition-transform duration-1000
+            ease-[cubic-bezier(0.22,1,0.36,1)]
+            motion-reduce:transition-none"
           style={{
             transformStyle: "preserve-3d",
             transform: isFlipped
@@ -44,7 +105,11 @@ export default function FlippingCard() {
             >
             <button
                 type="button"
-                onClick={() => setIsFlipped(true)}
+                onClick={() => {
+                  hasAutoFlipped.current = true;
+                  setIsFlipped(true);
+
+                }}
                 aria-label="Flip business card to view the back"
                 className="relative flex h-full w-full cursor-pointer
                 items-end justify-start overflow-hidden
@@ -78,6 +143,7 @@ export default function FlippingCard() {
             onClick={(event) => {
                 // Don't flip when clicking a social link.
                 if ((event.target as HTMLElement).closest("a")) return;
+                hasAutoFlipped.current = true;
                 setIsFlipped(false);
             }}
 >
@@ -121,40 +187,27 @@ export default function FlippingCard() {
                     text-[clamp(0.6rem,1.5vw,0.95rem)]
                     leading-[1.2]"
                 >
-                  <a
-                    href={DEPOP_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:underline underline-offset-2"
-                  >
-                    depop: @anywearshop
-                  </a>
-
-                  <a
-                    href={VINTED_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:underline underline-offset-2"
-                  >
-                    vinted: @anywearshop
-                  </a>
-
-                  <a
-                    href={INSTAGRAM_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:underline underline-offset-2"
-                  >
-                    instagram: @anywears.shop
-                  </a>
-
+                <a
+                  href="mailto:desk@anywears.world"
+                  onClick={(event) => event.stopPropagation()}
+                  className="
+                    inline-block text-inherit
+                    underline underline-offset-4 decoration-0.5
+                    transition-opacity duration-200
+                    hover:opacity-60
+                    focus-visible:outline-2
+                    focus-visible:outline-brand-blue
+                  "
+                >
+                  desk@anywears.world
+                </a>
                   <span className="mt-3">
-                    melbourne, au
+                    melbourne → berlin
                   </span>
                 </div>
 
                 <Image
-                  src="/images/branding/flower.png"
+                  src="/images/branding/logo.png"
                   alt="Anywears flower symbol"
                   width={960}
                   height={960}
@@ -167,11 +220,6 @@ export default function FlippingCard() {
           </div>
         </div>
       </div>
-
-    
-        <p className="mt-7 text-center text-[11px] font-normal lowercase tracking-[0.08em] text-charcoal/45">
-        click to turn ↻
-        </p>
 
     </div>
   );
