@@ -84,7 +84,7 @@ export default function FlippingCard() {
           className="
             relative aspect-[1.6] w-full
             rounded-[20px]
-            transition-transform duration-1000
+            transition-transform duration-1500
             ease-[cubic-bezier(0.22,1,0.36,1)]
             motion-reduce:transition-none"
           style={{
