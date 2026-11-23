@@ -21,7 +21,7 @@ export default function FlippingCard() {
       ([entry]) => {
         const isVisible =
           entry.isIntersecting &&
-          entry.intersectionRatio >= 0.65;
+          entry.intersectionRatio >= 0.40;
 
         if (isVisible && !isInContact) {
           isInContact = true;
@@ -31,7 +31,7 @@ export default function FlippingCard() {
               setIsFlipped(true);
               hasAutoFlipped.current = true;
               timer = null;
-            }, 2000);
+            }, 800);
           }
         }
 
@@ -49,7 +49,7 @@ export default function FlippingCard() {
         }
       },
       {
-        threshold: [0, 0.65, 1],
+        threshold: [0, 0.40, 1],
       }
     );
 
@@ -66,7 +66,17 @@ export default function FlippingCard() {
 
 
   return (
-    <div className="mx-auto w-full max-w-[560px]">
+    <div className="relative mx-auto w-full max-w-[560px] pt-7">
+      <span
+        aria-hidden="true"
+        className="
+          pointer-events-none absolute right-0 top-0
+          text-[10px] uppercase tracking-[0.12em]
+          text-charcoal/45
+        "
+      >
+        click / tap to interact ↻
+      </span>
       {/* Perspective container */}
       <div style={{ perspective: "1200px" }}>
         {/* Rotating card */}
