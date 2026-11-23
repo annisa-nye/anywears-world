@@ -1,123 +1,309 @@
 # anywears.world
 
 **An independent fashion archive, told through the web.**  
-*Melbourne → Berlin → Everywhere.*
+Melbourne → Berlin → Everywhere.
 
-> **Status:** In development — the foundation is in place; editorial photography and interactions are being developed.
+[**Explore anywears.world ↗**](https://anywears.world)
+
+---
 
 ## About
 
-**Anywears World** is a creative frontend project exploring the intersection of fashion, storytelling and technology.
+Anywears World is a bespoke digital experience for **Anywears**, my independent vintage and contemporary fashion business, established in Melbourne, Australia.
 
-It grew out of **Anywears**, my independent vintage and archive fashion business established in Melbourne, Australia. Rather than building a conventional online store, I'm translating the brand into a digital editorial experience — one shaped by imagery, typography, interaction and the details that make a customer experience memorable.
+Rather than building a conventional e-commerce storefront, I wanted to explore how a website could communicate a brand's identity through photography, typography, motion and interaction.
 
-As Anywears prepares for its next chapter in Berlin, this site will become a record of the pieces, people and places that have shaped it.
+The result is a deliberately minimal, editorial experience that invites visitors into the world of Anywears, from its beginnings in Melbourne to its next chapter in Berlin.
+
+The website also serves as an evolving portfolio project exploring frontend engineering, digital art direction and interaction design.
+
+**Independently designed and developed.**
 
 ## The concept
 
-**What if a website felt less like a storefront and more like stepping into someone's world?**
+*What if a website felt less like browsing a storefront and more like stepping into someone's world?*
 
-The site is designed as one continuous scrolling story, divided into six chapters:
+Anywears World translates the brand's visual identity into a continuous scrolling experience, structured around four chapters.
 
 | Chapter | Experience |
-| --- | --- |
-| **01 — Landing** | A vivid introduction through colour, motion and typography. |
-| **02 — About** | The philosophy behind Anywears: *found elsewhere, worn anywhere*. |
-| **03 — Archive** | An editorial collection of vintage and designer pieces sourced over the years. |
-| **04 — Where It Goes** | The people behind the purchases: customer reviews, packaging and personal touches. |
-| **05 — Everywhere** | The brand's journey from Melbourne to Berlin, and wherever comes next. |
-| **06 — Business Card** | A digital interpretation of the physical Anywears business card, serving as the site's footer. |
+|---|---|
+| **01 — Landing** | An immersive cobalt-blue introduction featuring the animated Anywears heartbeat. |
+| **02 — About** | The story and philosophy behind Anywears, told through photography and minimal typography. |
+| **03 — Archive** | An asymmetrical, responsive photographic composition showcasing selected vintage and contemporary pieces. |
+| **04 — Contact** | An interactive digital business card, contact details and links to the brand's resale platforms. |
 
-## Design direction
+The preview also includes a dedicated **Archive Coming Soon** page, providing a foundation for future collections.
 
-The creative direction draws from independent fashion publications: expressive photography, deliberate whitespace, restrained navigation and a strong sense of identity.
+## Design philosophy
 
-The design follows three principles:
+The creative direction draws inspiration from independent fashion publications, archival catalogues, printed ephemera and the small details of physical retail experiences.
 
-- **Intention over convention.** Interactions should support the story rather than imitate generic e-commerce patterns.
-- **Care in the details.** A handwritten note, a carefully wrapped order and a considered interface can all make a lasting impression.
-- **Technology as a creative medium.** Frontend engineering is a way to shape how a story is experienced, not just how it is displayed.
+Three principles guide the project:
+
+**Intention over convention.** Interactions should serve the experience rather than reproduce familiar website patterns.
+
+**Care in the details.** The same attention given to sourcing, photographing and packaging an item should extend to the digital experience.
+
+**Technology as a creative medium.** Frontend engineering can shape how a story is experienced, not simply how information is displayed.
+
+The design combines deliberate whitespace, asymmetrical compositions, restrained typography and moments of movement.
 
 ### Brand palette
 
 | Colour | Hex | Role |
-| --- | --- | --- |
-| Anywears Blue | `#1E1EA4` | Primary brand colour and active navigation |
-| Pastel Pink | `#FAC9FF` | Accent colour and landing typography |
-| Warm Off-White | `#F8F7F4` | Editorial background |
-| Charcoal | `#242424` | Main text |
+|---|---|---|
+| Anywears Blue | `#1E1EA4` | Primary brand colour, navigation and interaction accents |
+| Pastel Pink | `#FAC9FF` | Contrasting accent and landing typography |
+| Warm Canvas | `#F8F7F4` | Editorial background |
+| Charcoal | `#242424` | Primary text |
+
+**Typography:** Geist, Geist Mono and Allura.
+
+---
 
 ## Built with
 
-- **Next.js 16** — App Router and server-rendered page sections
-- **React** — Reusable components and interactive navigation
-- **TypeScript** — Type-safe development
-- **Tailwind CSS v4** — Responsive layouts and custom theme tokens
-- **Intersection Observer API** — Section visibility tracking
-- **CSS transitions** — Lightweight, dependency-free menu animation
+| Technology | Application |
+|---|---|
+| **Next.js 16** | App Router, page composition and image handling |
+| **React** | Reusable components and interactive interfaces |
+| **TypeScript** | Type-safe component development |
+| **Tailwind CSS v4** | Responsive styling, custom design tokens and animations |
+| **Intersection Observer API** | Scroll visibility and automatic interaction triggers |
+| **Browser History API** | URL hash synchronisation without page reloads |
+| **CSS 3D Transforms** | Interactive rotating business card |
+| **requestAnimationFrame** | Scroll-linked animation updates |
+| **Vercel** | Hosting, continuous deployment and custom-domain delivery |
 
-The project is intentionally a **single-page experience**, with each chapter in its own component so that the editorial design can evolve without rewriting the whole site.
+The website is built with bespoke React components rather than a visual website builder or pre-built component library.
 
-## Progress
+## Selected technical features
 
-### Implemented
+### 01 / Scroll-aware journey navigation
 
-- [x] Six-part single-page structure
-- [x] Custom brand palette and typography
-- [x] Full-viewport blue landing page with an animated-media placeholder
-- [x] Minimal `>` trigger and full-screen sliding navigation
-- [x] Active-section styling and scroll-position tracking
-- [x] Responsive layout foundation
-- [x] Passing lint, TypeScript and production build checks
+A custom four-point navigation system provides orientation throughout the website.
 
-### In progress
+The navigation remains hidden on Landing, preserving the immersive first impression, and appears once visitors enter the editorial chapters.
 
-- [ ] Add the landing GIF
-- [ ] Curate and integrate original archive photography
-- [ ] Develop a more expressive editorial layout for the Archive section
-- [ ] Refine navigation hash synchronisation and browser-history behaviour
-- [ ] Expand customer reviews and packaging storytelling
+Features include:
 
-### Planned
+- Scroll-aware active-section indicators.
+- Smooth navigation between chapters.
+- A dedicated return-to-Landing interaction.
+- Sticky editorial headings that move naturally into the header.
+- Section-specific URL hashes: `/#about`, `/#archive` and `/#contact`.
+- Reduced-motion considerations.
 
-- [ ] Refine the interactive business-card footer
-- [ ] Explore **Sanity CMS** for managing photographs and written content
-- [ ] Deploy the finished experience with **Vercel**
+The navigation system is designed to remain visually unobtrusive while making the single-page experience accessible and easy to explore.
+
+### 02 / Responsive photographic archive
+
+The Archive preview uses a custom photographic composition rather than a conventional product grid.
+
+On mobile, imagery is arranged in a staggered, asymmetrical layout. On larger screens, the composition expands horizontally with deliberate offsets.
+
+A scroll-linked animation introduces the photographs from opposite directions:
+
+- Left-positioned images enter from the left.
+- Right-positioned images enter from the right.
+- The composition settles as Archive fills the viewport.
+- Movement reverses naturally as visitors scroll away.
+
+The animation uses CSS transforms and `requestAnimationFrame` to update visual positioning without continuously updating React state.
+
+### 03 / Interactive digital business card
+
+The Contact chapter reinterprets a physical Anywears business card as a digital, interactive object.
+
+Built using CSS perspective and 3D transforms, the card rotates between its front and reverse faces.
+
+The interaction includes:
+
+- Automatic flipping when visitors enter Contact.
+- Manual flipping through mouse or touch interaction.
+- Resetting to the front when visitors leave the chapter.
+- Safari-conscious rendering refinements.
+- Reduced-motion support.
+- A direct email hyperlink.
+
+The reverse communicates the brand's identity through concise editorial typography:
+
+*hand-picked. vintage. contemporary finds.*
+
+Melbourne → Berlin.
+
+Beneath the card, a minimal directory provides direct access to Anywears on Depop and Vinted.
+
+### 04 / Editorial transitions
+
+Small folio-inspired dividers create visual pauses between chapters.
+
+Fine horizontal rules and Roman numeral references borrow from the visual language of printed fashion publications without introducing unnecessary navigation elements.
+
+### 05 / Archive Coming Soon
+
+The dedicated `/archive` route extends the visual identity of Landing with a cobalt-blue background, animated heartbeat and restrained typography.
+
+It provides a deliberate placeholder while the expanded archive remains in development.
+
+---
+
+## Project architecture
+
+The website uses a component-based architecture to separate editorial content, layout behaviour and interactions.
+
+```text
+app/
+├── layout.tsx
+├── page.tsx
+├── archive/
+│   └── page.tsx
+└── globals.css
+
+components/
+├── home/
+│   ├── Landing.tsx
+│   ├── About.tsx
+│   ├── ArchivePreview.tsx
+│   └── BusinessCard.tsx
+├── layout/
+│   ├── SiteHeader.tsx
+│   ├── JourneyNavigation.tsx
+│   ├── StickySectionTitle.tsx
+│   ├── ViewportSection.tsx
+│   ├── SectionDivider.tsx
+│   └── ComingSoon.tsx
+├── animations/
+│   └── ArchiveScrollMotion.tsx
+└── business-card/
+    ├── FlippingCard.tsx
+    └── ShopLinks.tsx
+```
+
+Each chapter is developed independently, allowing new content and interactions to be introduced without restructuring the entire website.
+
+## Development approach
+
+Anywears World is developed iteratively, with an emphasis on maintaining visual consistency while refining individual interactions.
+
+Particular attention has been given to:
+
+- Responsive behaviour across desktop and mobile devices.
+- Mobile viewport stability and Safari rendering.
+- Scroll positioning and sticky-element transitions.
+- Image loading and animation performance.
+- Reduced-motion accessibility.
+- Reusable components and separation of concerns.
+- Preserving the brand's visual identity across interactions.
+
+The project is intentionally lightweight, favouring native browser APIs and CSS capabilities where practical.
+
+### Branch strategy
+
+| Branch | Purpose |
+|---|---|
+| `main` | Public-facing website |
+| `development` | Ongoing features and experiments |
+| Feature/release branches | Isolated development and selective releases |
+
+Completed features are selectively released to production, while unfinished experiences remain under development.
+
+---
+
+## Current status
+
+**Public preview — [anywears.world](https://anywears.world)**
+
+The current version includes the four-chapter homepage, custom journey navigation, photographic Archive preview, Coming Soon route, interactive business card and links to existing resale platforms.
+
+Anywears World is an ongoing project. The public preview establishes its visual identity and technical foundations while leaving room for the archive to evolve.
+
+### Future development
+
+- Expand the Archive into a browsable collection of previously sourced pieces.
+- Introduce Aftercare, exploring packaging and customer experiences.
+- Refine mobile performance, image delivery and accessibility.
+- Continue experimenting with editorial layouts and bespoke interactions.
+
+The long-term intention is to create a living digital record of the pieces, people and places that shape Anywears.
+
+---
 
 ## Run locally
 
-**Prerequisite:** A compatible version of Node.js and npm.
+**Prerequisites:** Node.js and npm compatible with the project's Next.js version.
+
+Clone the repository:
 
 ```bash
-# Clone your fork or repository
-git clone <repository-url>
+git clone https://github.com/annisa-nye/anywears-world.git
 cd anywears-world
+```
 
-# Install dependencies and start the development server
+Install dependencies:
+
+```bash
 npm install
+```
+
+Start the development server:
+
+```bash
 npm run dev
 ```
 
-Visit [http://localhost:3000](http://localhost:3000).
+Open [http://localhost:3000](http://localhost:3000).
 
-To validate the project:
+### Validation
+
+Run ESLint:
 
 ```bash
 npm run lint
+```
+
+Build the production application:
+
+```bash
 npm run build
 ```
 
-> Replace `<repository-url>` with this repository's GitHub clone URL.
+Start the production server locally:
+
+```bash
+npm run start
+```
+
+---
+
+## Deployment
+
+Anywears World is hosted on Vercel and connected to the custom domain:
+
+**[anywears.world](https://anywears.world)**
+
+Production deployments are managed through the GitHub repository's `main` branch.
+
+The site is independent of its external resale platforms; Depop and Vinted remain the destinations for available inventory and purchases.
+
+---
 
 ## Why I'm building this
 
 My interests sit at the intersection of technology, science and design.
 
-Working in technical support has taught me to understand systems, solve complex problems and pay attention to the experience surrounding a solution. Running Anywears has taught me how much creative care matters — from sourcing a piece to writing to a customer and packaging their order.
+Working in technical support has taught me to understand systems, troubleshoot complex problems and consider the experience surrounding a solution. Building Anywears has taught me the value of creative care, from sourcing an item to communicating with customers and preparing an order.
 
-**Anywears World** brings those perspectives together. It is both a home for the brand's archive and an evolving portfolio project in frontend development, digital art direction and visual storytelling.
+Anywears World brings these perspectives together.
+
+It is an exploration of how technical problem-solving and visual storytelling can transform something functional into something thoughtful, personal and memorable.
+
+More than a website for a fashion archive, it is a continuing experiment in **bespoke frontend development and digital experience design**.
 
 ---
 
-*Independently designed and developed.*  
-*Melbourne, Australia → Berlin, Germany.*
+**Designed and developed by [Annisa Nye](https://annisanye.com).**
+
+Melbourne, Australia → Berlin, Germany.
+
+*An ongoing collection.*
