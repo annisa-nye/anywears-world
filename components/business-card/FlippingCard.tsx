@@ -31,7 +31,7 @@ export default function FlippingCard() {
               setIsFlipped(true);
               hasAutoFlipped.current = true;
               timer = null;
-            }, 800);
+            }, 2000);
           }
         }
 
